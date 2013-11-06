@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<!--
+<html manifest="c.manifest">
+-->
+<html>
+	<head>
+		<title>Web Audio API</title>
+		<meta charset="utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="audience" content="Alle" />
+		<meta http-equiv="content-language" content="de" />
+		
+		<style type="text/css">
+			body, html {
+				background-color: #ececec;
+				font-family: 'Helvetica neue';
+			}
+			#switch 
+			{
+				height: 25px;
+				float: left;
+				border-radius: 5px;
+				/* ohne glanz: black: */
+				border: 1px groove rgba(0,0,0,0.5);
+				cursor: pointer !important;
+				-webkit-user-select: none;
+				-webkit-tap-highlight-color: transparent;
+				-webkit-box-reflect:below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.2, transparent), to(rgba(255, 255, 255, 0.25)));
+				box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05);
+				zoom: 1;
+				position: static;
+				margin-left: 98px;
+			}
+			.segment 
+			{
+				width: 50px;
+				height: 25px;
+				float: left;
+				text-align: center;
+				line-height: 21pt;
+				/*-webkit-transition: 0.1s all;*/
+				background-image: -webkit-linear-gradient(#eaeaea 0%, #c5c5c5 50%, #a4a4a4 50.01%, #9f9f9f 100%);
+				box-shadow: inset 0px 1px 1px white;
+				font-family: sans-serif;
+				font-weight: 400;
+			}
+			.segment.left {
+				-webkit-border-bottom-left-radius: 4px;
+				-webkit-border-top-left-radius: 4px;
+				border-right: 1px solid rgba(0,0,0,0.5);
+			}
+			.segment.right {
+				-webkit-border-bottom-right-radius: 4px;
+				-webkit-border-top-right-radius: 4px;
+				width: 51px !important;
+			}
+			.segment.middle {
+				border-right: 1px solid rgba(0,0,0,0.5);
+			}
+			.segment:hover {
+				/*background-color: rgba(148,148,255,0.3);*/
+				box-shadow: inset 0px 1px 1px white
+			}
+			.segment.active {
+				/*background-color: #9393ff;*/
+
+				background-image: -webkit-linear-gradient(#d6d2ff .0%, #aca4ff 50%, #9088ff 50.01%, #7173ff 100%);
+				color: white;
+			}
+			footer {
+				position: fixed;
+				bottom: 3px;
+				left: 0px;
+				right: 0px;
+				text-align: center;
+				color: gray;
+				font-size: 12pt;
+				text-shadow: 0px 1px 0px white;
+			}
+			#panel {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 400px;
+				height: 400px;
+				margin-left: -200px;
+				margin-top: -200px;
+				padding: 20px;
+				background-color: rgba(255, 255, 255, .5);
+				border-radius: 30px;
+			}
+			#playButton {
+				-webkit-appearance: media-play-button;
+				font-size: 20px;
+				cursor: pointer;
+				-webkit-transition: .503s color;
+				text-shadow: 0px 1px 0px white;
+			}
+			#playButton:hover {
+				color: #848484
+			}
+		</style>
+		
+		<script type="text/javascript">
+			
+			var audioContext = undefined, song = 'Rock.mp3', source = undefined, buffer = undefined, filter, waveShape;
+			
+			window.onload = function(){
+			
+				window.applicationCache.addEventListener("chached", function(){
+					alert("cached!");
+				}, false);
+				window.applicationCache.ondownloading = function(){
+					alert("downloading...");
+				};
+						
+				if('webkitAudioContext' in window) {
+					window.AudioContext = window.AudioContext || window.webkitAudioContext;
+					audioContext = new webkitAudioContext();
+					
+					var xml = new XMLHttpRequest();
+					xml.open("GET", song, true);
+					xml.responseType = "arraybuffer";
+					xml.addEventListener("load", function(event){
+						
+						var src = audioContext.createBufferSource();
+						waveShape = audioContext.createWaveShaper();
+						document.getElementById('src').innerHTML = waveShape.channelInterpretation;
+						buffer = audioContext.createBuffer(xml.response, false);
+						src.buffer = buffer;
+						source = src;
+						source.connect(audioContext.destination);
+						
+					}, false);
+					xml.send(null);
+				} else {
+					alert("Your browser doesn't support Web Audio");
+				}
+				
+			}
+			
+			function play(){
+  				/*if (!audioContext.createGain)
+  				  audioContext.createGain = audioContext.createGainNode;
+  				var gainNode = audioContext.createGain();*/
+  				var src = audioContext.createBufferSource();
+  				src.buffer = buffer;
+  				
+  				// Connect source to a gain node
+  				//src.connect( audioContext.destination );
+  				
+  				//////////////////////////////////////////////////////////////////////
+  				filter = audioContext.createBiquadFilter();
+  				src.connect(filter);
+				filter.connect(audioContext.destination);
+				// Create and specify parameters for the low-pass filter.
+				filter.type = 3; // low-shelf filter. See BiquadFilterNode docs
+				//filter.frequency.value = 440; // Set cutoff to 440 HZ
+  				
+  				src.loop = true;
+  				if (!src.start)
+  				  src.start = src.noteOn;
+  				src.start(0);
+  				source = src;
+  				
+			}
+			
+			function pause(){
+				source.noteOff(0);
+			}
+			
+			function playPauseSound(){
+				// 0 => nix, 2 => play, 3 => pause
+				(source.playbackState == 2) ? pause() : play();
+			}
+			
+			function synthesize(type, val){
+				switch (type) {
+					case "Q":
+						//Quality
+						filter.Q.value = val;
+					break;
+					case "F":
+						//Frequency
+						filter.frequency.value = val;
+					break;
+					case "D":
+						//Detune
+						filter.detune.value = val;
+					break;
+					case "G":
+						//Gain
+						source.gain.value = val;
+					break;
+					default:
+					
+					break;
+				}
+			}
+			
+			function switchSeg(el){
+				var olC = document.getElementsByClassName("active")[0].className;
+				/^(\S* \S*) active$/.exec(olC.toString());
+				olCN = RegExp.$1;
+				document.getElementsByClassName("active")[0].className = olCN;
+				el.className += " active";
+				filter.type = parseInt(el.innerHTML);
+				if (el.innerHTML == 3){
+					for (var t in document.getElementsByClassName("t")){
+						var curr = document.getElementsByClassName("t")[t];
+						if (!curr || curr == undefined || curr.id == "G") continue;
+						curr.disabled = true;
+					}
+				} else {
+					for (var t in document.getElementsByClassName("t")){
+						var curr = document.getElementsByClassName("t")[t];
+						if (!curr || curr == undefined) continue;
+						curr.disabled = false;
+					}
+				}
+			}
+			
+		</script>
+		
+	</head>
+	<body>
+		<div id="panel">
+			<center>
+				<button id="playButton" onclick="playPauseSound()">play/pause</button>
+			</center>
+			<br /><br />
+			<table>
+				<thead>
+					<tr>
+						<th>
+							Controls
+							<hr />
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							Quality:
+						</td>
+						<td>
+							<input style="width:300px" disabled onchange="synthesize('Q', this.value)" class="t" id="Q" value='1' type="range" min="0.00009999999747" max="1000" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Frequency:
+						</td>
+						<td>
+							<input style="width:300px" disabled onchange="synthesize('F', this.value)" class="t" value="350" id="F" type="range" min="10" max="22050" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Gain:
+						</td>
+						<td>
+							<input style="width:300px" step="0.000001" onchange="synthesize('G', this.value)" class="t" id="G" type="range" min="0" max="2.5" value="1" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Detune:
+						</td>
+						<td>
+							<input style="width:300px" disabled id="D" onchange="synthesize('D', this.value)" value='0' class="t" type="range" min="-4800" max="4800" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<br />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Output: 
+						</td>
+						<td>
+							<span id="src">n/a</span>
+						</td>
+					</tr>
+				</tbody>
+			</table><br /><br /><br /><br />
+			
+			<center>
+				Filtermodus:<br /><br />
+				<div id="switch">
+				    <div class="segment left" onclick="switchSeg(this)" title='lowpass'>
+				    	0
+				    </div>
+				    <div class="segment middle" onclick="switchSeg(this)" title='highpass'>
+				    	1
+				    </div>
+				    <div class="segment middle" onclick="switchSeg(this)" title='bandpass'>
+				    	2
+				    </div>
+				    <div class="segment right active" onclick="switchSeg(this)" title='lowshelf'>
+				    	3
+				    </div>
+				</div>
+			</center>
+		</div>
+	</body>
+</html>
