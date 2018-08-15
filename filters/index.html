@@ -1,94 +1,99 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Web Audio API - Filters</title>
-		<meta charset="utf-8" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta http-equiv="content-language" content="de" />
-		<link rel="stylesheet" href="styles.css" />
-		<script type="text/javascript" src="app.js"></script>
-	</head>
-	<body>
-		<div id="panel">
-			<center>
-				<button id="playButton" onclick="playPauseSound()">play/pause</button>
-			</center>
-			<br /><br />
-			<table>
-				<thead>
-					<tr>
-						<th>
-							Controls
-							<hr />
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							Quality:
-						</td>
-						<td>
-							<input style="width:300px" disabled onchange="synthesize('Q', this.value)" class="t" id="Q" value='1' type="range" min="0.00009999999747" max="1000" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Frequency:
-						</td>
-						<td>
-							<input style="width:300px" disabled onchange="synthesize('F', this.value)" class="t" value="350" id="F" type="range" min="10" max="22050" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Gain:
-						</td>
-						<td>
-							<input style="width:300px" step="0.000001" onchange="synthesize('G', this.value)" class="t" id="G" type="range" min="0" max="2.5" value="1" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Detune:
-						</td>
-						<td>
-							<input style="width:300px" disabled id="D" onchange="synthesize('D', this.value)" value='0' class="t" type="range" min="-4800" max="4800" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<br />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Output: 
-						</td>
-						<td>
-							<span id="src">n/a</span>
-						</td>
-					</tr>
-				</tbody>
-			</table><br /><br /><br /><br />
-			
-			<center>
-				Filtermodus:<br /><br />
-				<div id="switch">
-				    <div class="segment left" onclick="switchSeg(this)" title='lowpass'>
-				    	0
-				    </div>
-				    <div class="segment middle" onclick="switchSeg(this)" title='highpass'>
-				    	1
-				    </div>
-				    <div class="segment middle" onclick="switchSeg(this)" title='bandpass'>
-				    	2
-				    </div>
-				    <div class="segment right active" onclick="switchSeg(this)" title='lowshelf'>
-				    	3
-				    </div>
-				</div>
-			</center>
-		</div>
-	</body>
+<head>
+  <title>Web Audio API - Filters</title>
+  <meta charset="utf-8"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="content-language" content="de"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <script type="text/javascript" src="app.js"></script>
+</head>
+<body>
+  <div id="panel">
+    <center>
+      <button id="playButton" onclick="playPauseSound()">play/pause</button>
+    </center>
+    <br/><br/>
+    <table>
+      <thead>
+      <tr>
+        <th>
+          Controls
+          <hr/>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          Quality:
+        </td>
+        <td>
+          <input style="width:300px" disabled onchange="synthesize('Q', this.value)" class="t" id="Q" value='1'
+                 type="range" min="0.00009999999747" max="1000"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Frequency:
+        </td>
+        <td>
+          <input style="width:300px" disabled onchange="synthesize('F', this.value)" class="t" value="350" id="F"
+                 type="range" min="10" max="22050"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Gain:
+        </td>
+        <td>
+          <input style="width:300px" step="0.000001" onchange="synthesize('G', this.value)" class="t" id="G" type="range"
+                 min="0" max="2.5" value="1"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Detune:
+        </td>
+        <td>
+          <input style="width:300px" disabled id="D" onchange="synthesize('D', this.value)" value='0' class="t"
+                 type="range" min="-4800" max="4800"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <br/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Output:
+        </td>
+        <td>
+          <span id="src">n/a</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br/><br/><br/><br/>
+
+    <center>
+      Filtermodus:<br/><br/>
+      <div id="switch">
+        <div class="segment left" onclick="switchSeg(this)" title='lowpass'>
+          0
+        </div>
+        <div class="segment middle" onclick="switchSeg(this)" title='highpass'>
+          1
+        </div>
+        <div class="segment middle" onclick="switchSeg(this)" title='bandpass'>
+          2
+        </div>
+        <div class="segment right active" onclick="switchSeg(this)" title='lowshelf'>
+          3
+        </div>
+      </div>
+    </center>
+  </div>
+</body>
 </html>

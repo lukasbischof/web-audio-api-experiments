@@ -1,0 +1,64 @@
+@-webkit-keyframes click {
+  0% {
+    -webkit-transform: scale(1);
+  }
+
+  20% {
+    -webkit-transform: scale(1.3);
+    color: rgba(0,0,0,0.9)
+  }
+
+  100% {
+    -webkit-transform: scale(0);
+    color: transparent;
+  }
+}
+
+#can {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.button {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  text-align: center;
+  line-height: 200px;
+  font-family: sans-serif;
+  font-size: 30px;
+  font-weight: 500;
+  z-index: 3;
+  cursor: pointer;
+  text-shadow: none;
+  -webkit-transition: 0.2s font-size, text-shadow;
+}
+
+.button:hover {
+  font-size: 34px;
+  text-shadow: 0px 0px 52px rgba(0,0,255,0.7);
+}
+
+.button.dis {
+  color: grey;
+  cursor: default;
+}
+
+#stop {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+  -webkit-transition: 1s all;
+  opacity: 0;
+  cursor: pointer;
+  background-color: black;
+}

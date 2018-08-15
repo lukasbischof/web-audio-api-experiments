@@ -1,23 +1,14 @@
 var audioContext = undefined, song = 'Rock.mp3', source = undefined, buffer = undefined, filter, waveShape;
 
-window.onload = function(){
-
-  window.applicationCache.addEventListener("chached", function(){
-    alert("cached!");
-  }, false);
-  window.applicationCache.ondownloading = function(){
-    alert("downloading...");
-  };
-
-  if('webkitAudioContext' in window) {
+window.onload = function() {
+  if ('webkitAudioContext' in window) {
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new webkitAudioContext();
 
     var xml = new XMLHttpRequest();
     xml.open("GET", song, true);
     xml.responseType = "arraybuffer";
-    xml.addEventListener("load", function(event){
-
+    xml.addEventListener("load", function() {
       var src = audioContext.createBufferSource();
       waveShape = audioContext.createWaveShaper();
       document.getElementById('src').innerHTML = waveShape.channelInterpretation;
@@ -25,26 +16,17 @@ window.onload = function(){
       src.buffer = buffer;
       source = src;
       source.connect(audioContext.destination);
-
     }, false);
     xml.send(null);
   } else {
     alert("Your browser doesn't support Web Audio");
   }
+};
 
-}
-
-function play(){
-  /*if (!audioContext.createGain)
-    audioContext.createGain = audioContext.createGainNode;
-  var gainNode = audioContext.createGain();*/
+function play() {
   var src = audioContext.createBufferSource();
   src.buffer = buffer;
 
-  // Connect source to a gain node
-  //src.connect( audioContext.destination );
-
-  //////////////////////////////////////////////////////////////////////
   filter = audioContext.createBiquadFilter();
   src.connect(filter);
   filter.connect(audioContext.destination);
@@ -57,19 +39,18 @@ function play(){
     src.start = src.noteOn;
   src.start(0);
   source = src;
-
 }
 
-function pause(){
-  source.noteOff(0);
+function pause() {
+  source.stop(0);
 }
 
-function playPauseSound(){
+function playPauseSound() {
   // 0 => nix, 2 => play, 3 => pause
   (source.playbackState == 2) ? pause() : play();
 }
 
-function synthesize(type, val){
+function synthesize(type, val) {
   switch (type) {
     case "Q":
       //Quality
@@ -88,26 +69,25 @@ function synthesize(type, val){
       source.gain.value = val;
       break;
     default:
-
       break;
   }
 }
 
-function switchSeg(el){
+function switchSeg(el) {
   var olC = document.getElementsByClassName("active")[0].className;
   /^(\S* \S*) active$/.exec(olC.toString());
   olCN = RegExp.$1;
   document.getElementsByClassName("active")[0].className = olCN;
   el.className += " active";
   filter.type = parseInt(el.innerHTML);
-  if (el.innerHTML == 3){
-    for (var t in document.getElementsByClassName("t")){
+  if (el.innerHTML == 3) {
+    for (var t in document.getElementsByClassName("t")) {
       var curr = document.getElementsByClassName("t")[t];
       if (!curr || curr == undefined || curr.id == "G") continue;
       curr.disabled = true;
     }
   } else {
-    for (var t in document.getElementsByClassName("t")){
+    for (var t in document.getElementsByClassName("t")) {
       var curr = document.getElementsByClassName("t")[t];
       if (!curr || curr == undefined) continue;
       curr.disabled = false;
