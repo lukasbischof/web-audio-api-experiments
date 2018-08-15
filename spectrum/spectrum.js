@@ -41,7 +41,7 @@ window.onload = function(){
 }
 
 function createNodes(source){
-    var volume = aCtx.createGainNode();
+    var volume = aCtx.createGain();
     var panner = aCtx.createPanner();
     
     panner.setPosition(0, 0, 0);
@@ -72,12 +72,11 @@ function setStrokeAndFillOpacityDown(down){
 }
 
 function playPause(){
-
 	var stop = document.getElementById("stop");
 	
 	try {
 	    if (source.playbackState == 2){
-		    source.noteOff(aCtx.currentTime);
+		    source.stop(aCtx.currentTime);
 		    
 		    stop.removeEventListener("click", playPause, false);
 		    stop.style.opacity = 0;
@@ -103,7 +102,7 @@ function playPause(){
     source.loop = true;
     source = createNodes(source);
     source.connect(aCtx.destination);
-    source.noteOn(aCtx.currentTime);
+    source.start(aCtx.currentTime, aCtx.currentTime);
     spectrumInterval = setInterval(drawSpectrum, 1000 / 25);
     
 	strokeOpacity = 0.2;
