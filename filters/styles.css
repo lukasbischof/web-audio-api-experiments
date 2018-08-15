@@ -1,0 +1,97 @@
+body, html {
+  background-color: #ececec;
+  font-family: 'Helvetica neue';
+}
+
+#switch {
+  height: 25px;
+  float: left;
+  border-radius: 5px;
+  /* ohne glanz: black: */
+  border: 1px groove rgba(0,0,0,0.5);
+  cursor: pointer !important;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-box-reflect:below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.2, transparent), to(rgba(255, 255, 255, 0.25)));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  zoom: 1;
+  position: static;
+  margin-left: 98px;
+}
+
+.segment {
+  width: 50px;
+  height: 25px;
+  float: left;
+  text-align: center;
+  line-height: 21pt;
+  /*-webkit-transition: 0.1s all;*/
+  background-image: -webkit-linear-gradient(#eaeaea 0%, #c5c5c5 50%, #a4a4a4 50.01%, #9f9f9f 100%);
+  box-shadow: inset 0 1px 1px white;
+  font-family: sans-serif;
+  font-weight: 400;
+}
+
+.segment.left {
+  -webkit-border-bottom-left-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-right: 1px solid rgba(0,0,0,0.5);
+}
+
+.segment.right {
+  -webkit-border-bottom-right-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  width: 51px !important;
+}
+
+.segment.middle {
+  border-right: 1px solid rgba(0,0,0,0.5);
+}
+
+.segment:hover {
+  /*background-color: rgba(148,148,255,0.3);*/
+  box-shadow: inset 0 1px 1px white
+}
+
+.segment.active {
+  /*background-color: #9393ff;*/
+
+  background-image: -webkit-linear-gradient(#d6d2ff .0%, #aca4ff 50%, #9088ff 50.01%, #7173ff 100%);
+  color: white;
+}
+
+footer {
+  position: fixed;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: gray;
+  font-size: 12pt;
+  text-shadow: 0 1px 0 white;
+}
+
+#panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-left: -200px;
+  margin-top: -200px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, .5);
+  border-radius: 30px;
+}
+
+#playButton {
+  -webkit-appearance: media-play-button;
+  font-size: 20px;
+  cursor: pointer;
+  -webkit-transition: .503s color;
+  text-shadow: 0 1px 0 white;
+}
+
+#playButton:hover {
+  color: #848484
+}
