@@ -32,7 +32,6 @@ window.onload = function() {
 
   for (var i in document.getElementsByClassName("button")) {
     document.getElementsByClassName("button")[i].onmousedown = function() {
-      console.log(this);
       this.style.webkitAnimation = "0.6s click";
       window.onwebkitanimationend = (function(t) {
         return function() {
@@ -110,7 +109,6 @@ function playPause() {
 
   strokeOpacity = 0.2;
   setStrokeAndFillOpacityDown(false);
-
 
   stop.addEventListener("click", playPause, false);
 }
